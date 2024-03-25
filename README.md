@@ -14,8 +14,11 @@ Die Firmware muss wegen der Grösse allenfalls per USB Kabel auf den Controller 
 1. Den gPlug mit dem mitgelieferten Kabel in die RJ12 Buchse des Smart Meter einstecken.
 2. Der gPlug generiert einen W-Lan, mit welchem Sie sich per Notebook oder Smartphone verbinden können.
 3. Im Internetbrowser geben sie die Adresse http://192.168.4.1 ein.
-4. Anschliessend können sie Ihr eigenes W-Lan einrichten. Nach erfolgreichem Einrichten zeigt der gPlug die IP in Ihrem Netzwerk.
-5. Zukünftig können sie nun mit dieser Nummer auf den gPlug in Ihrem W-Lan zugreifen. Einfach http:// und die nummer mit den Punkten eingeben.
+4. Anschliessend können sie Ihr eigenes W-Lan einrichten. Nach erfolgreichem Einrichten zeigt der gPlug die IP in Ihrem Netzwerk.\
+<img src="https://github.com/NikLuy/ebsTasmota/assets/7451747/fc4f3de8-9f6d-42be-8758-3037be5f79b6" width="250" >
+
+6. Zukünftig können sie nun mit dieser Nummer auf den gPlug in Ihrem W-Lan zugreifen. Einfach http:// und die nummer mit den Punkten eingeben.
+<img src="https://github.com/NikLuy/ebsTasmota/assets/7451747/2ea7eefb-bf86-4915-8735-7affff76ab8c" width="250" >
 
 ## Script
 Anschliessend unter: \
