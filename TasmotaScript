@@ -1,0 +1,56 @@
+>D
+;L&G 360 ebs
+
+tSec=0
+upH=0
+
+>B
+=>sensor53 r
+=>TelePeriod 10
+
+>M 1
+;Letzte Zahl ist die anzahl Kommastellen bei Mqtt sofortübertragung anzahl Kommastellen + 16
++1,3,o,0,115200
+1,=h<h3>Leistung</h3>
+1,=h<hr/>
+1,1-0:21.7.0(@0.001,Verbrauch L1,W,P1i,0
+1,1-0:41.7.0(@0.001,Verbrauch L2,W,P2i,0
+1,1-0:61.7.0(@0.001,Verbrauch L3,W,P3i,0
+1,1-0:1.7.0(@0.001,<b>Verbrauch Total</b>,W,Pi,0
+1,=h</br>
+1,1-0:22.7.0(@0.001,Abgabe L1,W,P1o,0
+1,1-0:42.7.0(@0.001,Abgabe L2,W,P2o,0
+1,1-0:62.7.0(@0.001,Abgabe L3,W,P3o,0
+1,1-0:2.7.0(@0.001,<b>Abgabe Total</b>,W,Po,0
+1,=h<h3>Strom & Spannung</h3>
+1,=h<hr/>
+1,1-0:31.7.0(@1,Strom L1,A,I1,3
+1,1-0:32.7.0(@1,Spannung L1,V,U1,1
+1,=h</br>
+1,1-0:51.7.0(@1,Strom L2,A,I2,3
+1,1-0:52.7.0(@1,Spannung L2,V,U2,1
+1,=h</br>
+1,1-0:71.7.0(@1,Strom L3,A,I3,3
+1,1-0:72.7.0(@1,Spannung L3,V,U3,1
+
+1,=h<h3>Energie Zähler</h3>
+1,=h<hr/>
+1,1-0:3.8.0(@1,R+ Energie,kWh,B1,3
+1,1-0:4.8.0(@1,R- Energie,kWh,B2,3
+1,1-0:1.8.0(@1,Wirk A+,kWh,E1,3
+1,1-0:2.8.0(@1,Wirk A-,kWh,E2,3
+1,=h<hr/>
+1,=hZeitstempel
+1,0-0:1.0.0(@1,YYMMDDHHmmss,,TS,16
+>T
+; on mqtt pub, set vars
+
+>S
+; today sec
+tSec=(60*time)+secs
+upH=uptime/60
+
+
+>W
+@<style>td h3{margin-block-end: 0;color: #eaeaea}th{font-weight: normal;}tr th:first-child{text-align: left;}tr td:nth-child(2){text-align: right;color: #ffe417;font-weight:normal;}table{width:100\%;}</style>
+@<table><tbody><tr><th>Zeit</th><td>%tstamp%</td></tr><tr><th>Aktiv</th><td> %1upH%h</td></tr></tbody></table>
