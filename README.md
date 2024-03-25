@@ -2,7 +2,21 @@
 Diese version von Tasmota ist eine variante der Tasmota software, mit einstellungen für den Smartmeter L&G 360 
 Die Installation und Einstelleungen sind relativ einfach. 
 
+## Hardware 
+### gPlug
+Die fertige Hardware kann hier bestellt werden. https://gplug.ch/produkte/gplug/
+
+### Eigene Platine
+Alternativ kann diese auch selbst mit einem ESP32 oder ESP8266 erstellt werden. 
 Die Firmware muss wegen der Grösse allenfalls per USB Kabel auf den Controller geladen werden. 
+
+## Verbindung mit gPlug
+1. Den gPlug mit dem mitgelieferten Kabel in die RJ12 Buchse des Smart Meter einstecken.
+2. Der gPlug generiert einen W-Lan, mit welchem Sie sich per Notebook oder Smartphone verbinden können.
+3. Im Internetbrowser geben sie die Adresse http://192.168.4.1 ein.
+4. Anschliessend können sie Ihr eigenes W-Lan einrichten. Nach erfolgreichem Einrichten zeigt der gPlug die IP in Ihrem Netzwerk.
+5. Zukünftig können sie nun mit dieser Nummer auf den gPlug in Ihrem W-Lan zugreifen. Einfach http:// und die nummer mit den Punkten eingeben.
+
 ## Script
 Anschliessend unter: \
 \
