@@ -22,5 +22,5 @@ Sollen die Werte an einen MQTT Server gesendet werden, kann die Updaterate anhan
 
 ## GUI
 Das GUI zeigt alle Werte, welche über den SmartMeter L&G ausgelesen werden können. 
-Nur die Blindleistungen habe ich weggelassen. 
+Nur die Blindleistungen habe ich weggelassen. \
 ![image](https://github.com/NikLuy/ebsTasmota/assets/7451747/e2b9d342-4ddb-4041-a1db-78ddab48bee7)
