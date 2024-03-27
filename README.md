@@ -1,5 +1,5 @@
 # Informationen
-Dies ist eine variante der Tasmota software, mit einstellungen für den Smartmeter L&G 360 
+Dies ist eine variante der Tasmota software, mit Einstellungen für den Smartmeter L&G 360 
 Die Installation und Einstelleungen sind relativ einfach. 
 
 ## Freischaltung 
