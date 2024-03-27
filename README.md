@@ -1,6 +1,10 @@
-# Kundenschnittstelle
-Diese version von Tasmota ist eine variante der Tasmota software, mit einstellungen für den Smartmeter L&G 360 
+# Informationen
+Dies ist eine variante der Tasmota software, mit einstellungen für den Smartmeter L&G 360 
 Die Installation und Einstelleungen sind relativ einfach. 
+
+## Freischaltung 
+Um die Kundenschnittstelle Freizuschalten muss das Antragsformular bei der ebs Energie AG eingereicht werden. 
+Die Können natürlich nur Stromkunden der ebs Energie AG. 
 
 ## Hardware 
 ### gPlug
