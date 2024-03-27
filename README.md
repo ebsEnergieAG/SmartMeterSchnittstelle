@@ -4,7 +4,7 @@ Die Installation und Einstelleungen sind relativ einfach.
 
 ## Freischaltung 
 Um die Kundenschnittstelle Freizuschalten muss das Antragsformular bei der ebs Energie AG eingereicht werden. 
-Die Können natürlich nur Stromkunden der ebs Energie AG. 
+Diesen Antrag können natürlich nur Stromkunden der ebs Energie AG stellen. 
 
 ## Hardware 
 ### gPlug
