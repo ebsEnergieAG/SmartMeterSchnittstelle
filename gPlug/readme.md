@@ -13,7 +13,7 @@ Unter dem Ordner tasmota ist mein user_config_oerride.h, welches für meine FW v
 
 https://tasmota.github.io/docs/Smart-Meter-Interface/
 
-Eine Videoanleitung mit der Software und alle ist hier zu finden. Diese zeigt zwar die Auslesung über einen IR-Kopf aber die Installation ist die selbe. 
+Eine Videoanleitung mit der Software und Installation ist hier zu finden. Die Anleitung zeigt zwar die Auslesung über einen IR-Kopf aber die Installation ist die selbe. 
 
 https://www.youtube.com/watch?v=s6qQs4FN9B0&t=961s&ab_channel=haus-automatisierung.com
 
