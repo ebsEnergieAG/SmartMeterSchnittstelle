@@ -1,6 +1,13 @@
 # Informationen
-Dies ist eine variante der Tasmota software, mit Einstellungen für den Smartmeter L&G 360 
+Dies ist eine Variante der Tasmota software, mit Einstellungen für den Smartmeter L&G 360 
 Die Installation und Einstelleungen sind relativ einfach. 
+
+https://tasmota.github.io/docs/Smart-Meter-Interface/
+
+## Firmware 
+Ich habe meine Firmware mit den verwendeten Einstellungen hier im Repo abgelegt. 
+* Unter gPlug liegt die aktuelle Firmware [gPlug](gPlug/readme.md)
+* Unter gPlugD folgt die neue Version [gPlugD](gPlugD%20(neue%20Version)/readme.md)
 
 ## Freischaltung 
 Um die Kundenschnittstelle Freizuschalten muss das Antragsformular bei der ebs Energie AG eingereicht werden. 
