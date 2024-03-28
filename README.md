@@ -34,7 +34,7 @@ Die Firmware muss wegen der Grösse allenfalls per USB Kabel auf den Controller 
 6. Zukünftig können sie nun mit dieser Nummer auf den gPlug in Ihrem W-Lan zugreifen. Einfach http:// und die nummer mit den Punkten eingeben.
 <img src="https://github.com/NikLuy/ebsTasmota/assets/7451747/2ea7eefb-bf86-4915-8735-7affff76ab8c" width="250" >
 
-## Script
+## [Script](Scripts/)
 Anschliessend unter: \
 \
 Tools \
