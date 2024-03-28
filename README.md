@@ -17,6 +17,9 @@ Diesen Antrag können natürlich nur Stromkunden der ebs Energie AG stellen.
 ### gPlug
 Die fertige Hardware kann hier bestellt werden. https://gplug.ch/produkte/gplug/
 
+### gPlugD
+Die fertige Hardware kann hier bestellt werden. https://gplug.ch/produkte/
+
 ### Eigene Platine
 Alternativ kann diese auch selbst mit einem ESP32 oder ESP8266 erstellt werden. 
 Die Firmware muss wegen der Grösse allenfalls per USB Kabel auf den Controller geladen werden. 
