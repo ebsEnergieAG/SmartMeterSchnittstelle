@@ -6,8 +6,8 @@ https://tasmota.github.io/docs/Smart-Meter-Interface/
 
 ## Firmware 
 Ich habe meine Firmware mit den verwendeten Einstellungen hier im Repo abgelegt. 
-* Unter gPlug liegt die aktuelle Firmware [gPlug](gPlug/readme.md)
-* Unter gPlugD folgt die neue Version [gPlugD](gPlugD%20(neue%20Version)/readme.md)
+* Unter gPlug liegt die aktuelle Firmware [gPlug](gPlug/)
+* Unter gPlugD folgt die neue Version [gPlugD](gPlugD%20(neue%20Version)/)
 
 ## Freischaltung 
 Um die Kundenschnittstelle Freizuschalten muss das Antragsformular bei der ebs Energie AG eingereicht werden. 
