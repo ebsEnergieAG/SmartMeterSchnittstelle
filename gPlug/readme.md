@@ -17,3 +17,6 @@ Eine Videoanleitung mit der Software und Installation ist hier zu finden. Die An
 
 https://www.youtube.com/watch?v=s6qQs4FN9B0&t=961s&ab_channel=haus-automatisierung.com
 
+## user_config_override
+
+
