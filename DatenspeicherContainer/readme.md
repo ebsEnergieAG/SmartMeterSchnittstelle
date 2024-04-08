@@ -73,6 +73,18 @@ sudo docker run -it -d \
 	influxdb:1.8
 ```
 
+```
+docker ps -a
+```
+```
+docker <ID> /bin/bash
+```
+```
+influx 
+```
+```
+create Database EnergyData 
+```
 ## Grafana  Installation 
 ```
 docker volume create grafana
