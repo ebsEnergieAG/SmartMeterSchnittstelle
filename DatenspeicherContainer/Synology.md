@@ -2,6 +2,9 @@
 
 ![image](https://github.com/ebsEnergieAG/SmartMeterSchnittstelle/assets/7451747/6afa3ecd-9909-4a8d-9a03-6749e7d40a0e)
 
+![image](https://github.com/ebsEnergieAG/SmartMeterSchnittstelle/assets/7451747/bfd7872f-ab82-422b-8cf9-3fd64e7a4332)
+
+
 ```
 version: "3.8"  # Specify docker-compose version
 
