@@ -70,24 +70,20 @@ sudo docker run -it -d \
 	-v influxdb:/var/lib/influxdb \
 	--name=influxdb \
 	--restart=always \
-	influxdb:latest
+	influxdb:1.8
 ```
-Anschliessend den Befehl 
+
 ```
-sudo docker ps -a 
+docker ps -a
 ```
-Die ID vom Container influxdb inten ohne <> eingeben es gibt kein l(L) das ist eine 1(eins) ;-) 
-Der Befehl unten öffnet den Container 
 ```
-docker exec <ID> /bin/bash
+docker <ID> /bin/bash
 ```
-mit dem Befehl Influx öffen wir den Datenbank Zugriff 
 ```
-influx
+influx 
 ```
-Mit diesem Befehl wird die Datenbank EnergyData erstellt. 
 ```
-create database EnergyData
+create Database EnergyData 
 ```
 ## Grafana  Installation 
 ```
@@ -114,6 +110,14 @@ Um die Daten zu Überprüfen würde ich den MQTT explorer empfehlen, dort wird a
 
 ![image](https://github.com/ebsEnergieAG/SmartMeterSchnittstelle/assets/7451747/5b66c6d8-3cc9-47ea-9b16-1bafb43e5f92)
 ![image](https://github.com/ebsEnergieAG/SmartMeterSchnittstelle/assets/7451747/be4fd094-e568-4c5b-bbe7-b2ee6b793b35)
+
+## Influx db 
+Um Influx einzurichten einfach die IP des Servers gefolgt von :8086 eingeben im Browser 
+z.B http://192.168.1.159:8086
+
+![image](https://github.com/ebsEnergieAG/SmartMeterSchnittstelle/assets/7451747/7cf0048e-9de7-4a94-8454-7aad26309027)
+![image](https://github.com/ebsEnergieAG/SmartMeterSchnittstelle/assets/7451747/8b7d66b6-9bf1-4219-9dc8-0ba93630f6ee)
+
 
 
 ## Node Red 
@@ -210,6 +214,9 @@ Fertiger Node
 ## Grafana einstellen 
 Um Grafana einzurichten einfach die IP des Servers gefolgt von :3000 eingeben im Browser 
 z.B http://192.168.1.159:3000
+
+![image](https://github.com/ebsEnergieAG/SmartMeterSchnittstelle/assets/7451747/8434c10a-2c0d-4ad1-ae22-a3ef05890f7b)
+
 
 ![image](https://github.com/ebsEnergieAG/SmartMeterSchnittstelle/assets/7451747/6fef7a26-c30e-4d31-b203-b48280d7d940)
 ![image](https://github.com/ebsEnergieAG/SmartMeterSchnittstelle/assets/7451747/7bbca90b-c816-4497-b666-7d73592f00ff)
