@@ -211,6 +211,9 @@ Fertiger Node
 Um Grafana einzurichten einfach die IP des Servers gefolgt von :3000 eingeben im Browser 
 z.B http://192.168.1.159:3000
 
+![image](https://github.com/ebsEnergieAG/SmartMeterSchnittstelle/assets/7451747/8434c10a-2c0d-4ad1-ae22-a3ef05890f7b)
+
+
 ![image](https://github.com/ebsEnergieAG/SmartMeterSchnittstelle/assets/7451747/6fef7a26-c30e-4d31-b203-b48280d7d940)
 ![image](https://github.com/ebsEnergieAG/SmartMeterSchnittstelle/assets/7451747/7bbca90b-c816-4497-b666-7d73592f00ff)
 ![image](https://github.com/ebsEnergieAG/SmartMeterSchnittstelle/assets/7451747/349f421c-be48-4099-8830-d9e284c0f2ae)
