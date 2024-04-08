@@ -70,7 +70,7 @@ sudo docker run -it -d \
 	-v influxdb:/var/lib/influxdb \
 	--name=influxdb \
 	--restart=always \
-	influxdb:latest
+	influxdb:1.8
 ```
 
 ## Grafana  Installation 
