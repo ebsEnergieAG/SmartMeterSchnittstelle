@@ -2,3 +2,55 @@
 
 ![image](https://github.com/ebsEnergieAG/SmartMeterSchnittstelle/assets/7451747/6afa3ecd-9909-4a8d-9a03-6749e7d40a0e)
 
+```
+version: "3.8"  # Specify docker-compose version
+
+services:
+  mosquitto-server:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto-server
+    restart: always  # Restart container on failure
+    ports:
+      - "1883:1883"  # Map container port 1883 to host port 1883
+      - "9001:9001"  # Map container port 9001 to host port 9001 (optional)
+    volumes:
+      - mosquitto_conf:/mosquitto/config  # Mount config volume
+      - mosquitto_data:/mosquitto/data    # Mount data volume
+      - mosquitto_log:/mosquitto/log      # Mount log volume
+
+  nodered:
+    image: nodered/node-red:latest
+    container_name: nodered
+    restart: always  # Restart container on failure
+    ports:
+      - "1880:1880"  # Map container port 1880 to host port 1880
+    volumes:
+      - node_red_data:/data  # Mount data volume
+
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    restart: always  # Restart container on failure
+    ports:
+      - "8086:8086"  # Map container port 8086 to host port 8086
+    volumes:
+      - influxdb:/var/lib/influxdb  # Mount data volume
+    command: ["influxdb", "-execute", 'CREATE DATABASE EnergyData']  # Run command to create database
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: always  # Restart container on failure
+    ports:
+      - "3000:3000"  # Map container port 3000 to host port 3000
+    volumes:
+      - grafana:/var/lib/grafana  # Mount data volume
+
+volumes:
+  mosquitto_conf:  # Define volume for mosquitto config
+  mosquitto_data:  # Define volume for mosquitto data
+  mosquitto_log:   # Define volume for mosquitto logs
+  node_red_data:  # Define volume for node-red data
+  influxdb:       # Define volume for influxdb data
+  grafana:        # Define volume for grafana data
+```
