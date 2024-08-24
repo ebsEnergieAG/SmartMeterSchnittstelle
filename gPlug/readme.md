@@ -9,7 +9,7 @@ Als basis FW liegt die die Version v13.4.0 zugrunde.
 
 ## Eigene Firmware 
 Wer seine eigene Firmware erstellen will, kann dies mit der Vorlage von Tasmota gerne tun. 
-Unter dem Ordner tasmota ist mein user_config_oerride.h, welches für meine FW verwendet wurde. 
+Unter dem Ordner Config_Files ist mein user_config_oerride.h, welches für meine FW verwendet wurde. 
 
 https://tasmota.github.io/docs/Smart-Meter-Interface/
 
