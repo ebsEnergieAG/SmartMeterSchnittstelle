@@ -79,12 +79,15 @@ if (secs%30==0)
 	s4hp3=avgP3/avgvc
 	s4hpT=avgPT/avgvc
 
-	avgv=avgP1
+	avgP1=0
+        avgP2=0
+        avgP3=0
+        avgPT=0
 	avgvc=0
 
 	; Set 4h x-axis a 30s => /120 values per hour for 4h diagram. Arraysize = 480 (new function cnth)
 	; tasmota calc [hh:mm] via cnthX/Y. mm = X%Y * 60/Y. hh = X/Y
-	cstr2="cnth"+s(1.0((((hours+20)*120)+(mins*2)+(int(secs/30)))%2880+1))+"/120"
+	cstr2="cnth"+s(1.0((((hours+0)*120)+(mins*2)+(int(secs/30)))%2880+1))+"/120"
 }
 
 ; every 60s
@@ -103,7 +106,7 @@ if (secs%60==0)
 ; WEB INTERFACE
 >W
 ; Auto reload
-$<script> setTimeout("location.reload(true);",5000); </script>
+;$<script> setTimeout("location.reload(true);",5000); </script>
 
 
 ; Time/Date
@@ -133,4 +136,7 @@ $Sofort speichern dies in Console eingeben: "script >svars"<br>
 $</span></center></div>
 
 ; -- END SCRIPT --
+
 #
+>WS
+<style>div#l1{display:none;}</style>
