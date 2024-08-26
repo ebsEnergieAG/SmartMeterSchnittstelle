@@ -1,5 +1,5 @@
 >D
-;L&G 360 ebs
+;L&G 360 ebs with Google Chart Integration
 
 upH=0
 sr=0
@@ -9,19 +9,50 @@ rBlink=0
 d=750
 bu=0
 noWifi=0
+
 ; define pins
 rL=6
 gL=5
 bL=7
 butA=9
+
 ; shared var within local network
 g:Pi=0
 g:Po=0
 
+; -- ARRAYS --
+; 24h power chart
+M:p:sday=0 288
+; daily energy from grid table day 1-31
+M:p:dcon=0 31
+; monthly energy table
+M:p:mcon=0 12
+; 4h power chart, value every 30s
+M:s4h=0 480
+
+; -- VARS --
+; energy from grid [kWh]
+EnFrGrid=0
+; actual power from grid [W]
+power=0
+; monthval and dayval
+p:mval=0
+p:dval=0
+tmp=0
+m5=0
+cstr="cnt0/12"
+cstr2="cnth0/120"
+utm="00d 00h 00m"
+avgv=0
+avgv2=0
+avgvc=0
+avgvc2=0
+hour=0
+da=31
+
 >B
 ->setOption55 1
 ->sensor53 r
-;->sensor53 l14
 
 ;configure GPIO
 spinm(rL O)
@@ -29,7 +60,6 @@ spinm(gL O)
 spinm(bL O)
 spinm(butA P)
 
->BS
 ; lightshow at startup
 spin(rL 1)
 delay(d)
@@ -44,19 +74,13 @@ delay(d)
 spin(bL 0)
 
 >M 1
-
 +1,4,o,0,115200
-;1,=so3,512
-; substitue your 32 char HEX Key (GPK0) for "DECR-KEY" below
-; or, if data is not encrypted, use "1,=so4,"
-;1,=so4,DECR-KEY
+1,1-0:1.7.0(@1,<b>Verbrauch Total</b>,kW,Pi,19
+1,1-0:3.8.0(@1,R+ Energie,kWh,B1,19
 
-1,=h<h3>Leistung</h3>
-1,=h<hr/>
 1,1-0:21.7.0(@0.001,Verbrauch L1,W,P1i,16
 1,1-0:41.7.0(@0.001,Verbrauch L2,W,P2i,16
 1,1-0:61.7.0(@0.001,Verbrauch L3,W,P3i,16
-1,1-0:1.7.0(@1,<b>Verbrauch Total</b>,kW,Pi,19
 1,=h</br>
 1,1-0:22.7.0(@0.001,Abgabe L1,W,P1o,0
 1,1-0:42.7.0(@0.001,Abgabe L2,W,P2o,0
@@ -111,27 +135,153 @@ if bu>2 {
   bu=0
 }
 
->F
-; every 100 ms
-
-; blink green on (1·7) reception
-if smlv[2]==1 {
-  spin(gL 1)
-  smlv[0]
-} else {
-  spin(gL 0)
+;start mqtt if smartmeter is sending
+if (sml[2]>0)
+{
+	smlj=1
 }
 
-if rBlink>0 {
-  spin(rL 1)
-  rBlink-=1
-  noWifi=0
-} else {
-  spin(rL 0)
+;check if NTP works, otherwise arrays can be corrupted
+if (year<2020)
+{
+	print NTP not ready
+	break
 }
 
+; every 3s
+if (secs%3==0)
+{
+	; actual power [W]
+	power=Pi	
+	; sum up power Pi for 4h and 24h chart
+	avgv+=power
+	avgv2+=power
+	avgvc+=1
+	avgvc2+=1	
+}
+
+; every 30s
+if (secs%30==0)
+{
+	; 4h chart. idx is set automatically
+	s4h=avgv/avgvc
+	avgv=0
+	avgvc=0
+
+	; Set 4h x-axis a 30s => /120 values per hour for 4h diagram. Arraysize = 480 (new function cnth)
+	; tasmota calc [hh:mm] via cnthX/Y. mm = X%Y * 60/Y. hh = X/Y
+	cstr2="cnth"+s(1.0(((hours*120)+(mins*2)+(int(secs/30)))%2880+1))+"/120"
+}
+
+; every 60s
+if (secs%60==0)
+{
+	hour=hours
+	;uptime in days hours minutes
+	utm=s(2.0(int(uptime/1440)))+"d "+s(2.0(int(uptime/60)%24))+"h "+s(2.0(uptime%60))+"m"
+
+	; copy SML values
+	; energy from grid [kWh]
+	EnFrGrid=B1
+
+	; day consumption [kWh]
+	dcon[day]=EnFrGrid-dval
+	; month consumption [kWh]
+	mcon[month]=EnFrGrid-mval
+	
+	; 24h chart. calc avg power [W] for last 5min and put into array[1-288]
+	m5=int((((hours*60)+mins)/5)+1)
+	; set idx (pointer starts from 0)
+	sday[0]=m5
+	if (chg[m5]>0)
+	{
+		sday[m5]=int(avgv2/avgvc2)
+		avgv2=0
+		avgvc2=0
+	}
+
+	; Set 24h x-axis a 5m => /12 values per hour for 24h diagram. Arraysize = 288 (new function cnth)
+	cstr="cnth"+s(1.0(((hours)*12)+int(mins/5))+1)+"/12"
+
+	; day consumption calculation at midnight
+	if ((chg[hour]>0) and (hour==0))
+	{
+		if (day>1)
+		{
+			da=day
+		}
+		else
+		{
+		    ; change of month, set last days to 0 (Feb, Apr...)
+			for tmp (da+1) 31 1
+				dcon[tmp]=0
+			next
+			; monthly values
+			mval=EnFrGrid
+		}
+		; daily values
+		dval=EnFrGrid
+		; save only once at midnight
+		svars 
+	}
+}
+
+; WEB INTERFACE
 >W
 @<style>td h3{margin-block-end: 0;color: #eaeaea}th{font-weight: normal;}tr th:first-child{text-align: left;}tr td:nth-child(2){text-align: right;color: #ffe417;font-weight:normal;}table{width:100\%;}</style>
 @<table><tbody><tr><th>Zeit</th><td>%tstamp%</td></tr><tr><th>Aktiv</th><td> %1upH%h</td></tr></tbody></table>
 
+; consumption
+Tagesverbrauch{m}%2(EnFrGrid-dval)% kWh
+Monatsverbrauch{m}%2(EnFrGrid-mval)% kWh
 
+; Time/Date
+Datum{m}%s(2.0day)%.%s(2.0month)%.%s(2.0year)% - %s(2.0hours)%:%s(2.0mins)%:%s(2.0secs)%
+Uptime{m}%0utm%
+$<div style="margin-left:-20px">
+
+; 4h power chart - new value every 30s
+$<div id="chart1" style="text-align:center;width:400px"></div>
+$gc(lt s4h "wr" "Leistung [W]" cstr2)
+$var options = {
+$chartArea:{left:60,width:'83%%'},
+$legend:'none',
+$vAxis:{format:'# W'},
+$explorer:{actions:['dragToZoom', 'rightClickToReset']},
+$series: {0: {type: 'area'}},              
+$title:'Verbrauch 4 Stunden [Watt]'
+$};
+$gc(e)
+
+; 24h power chart
+$<div id="chart2" style="text-align:center;width:400px"></div>
+$gc(lt sday "wr" "Leistung [W]" cstr)
+$var options = {
+$chartArea:{left:60,width:'83%%'},
+$legend:'none',
+$vAxis:{format:'# W'},
+$explorer:{actions:['dragToZoom', 'rightClickToReset']},
+$series: {0: {type: 'area'}},            
+$title:'Verbrauch 24 Stunden [Watt]'
+$};
+$gc(e)
+
+; simply chart with 2 rows
+;$<div id="chart3" style="text-align:center;width:400px"></div>
+;$gc(c dprod "wr" "kWh" "cnt1" "Tägliche Einspeisung")
+
+; daily energy consumption month chart
+%=#daysub
+
+; monthly energy consumption year chart
+%=#monthsub
+
+$<center><span style="font-size:10px;">
+$Version 07.06.2024 by ottelo.jimdo.de<br>
+$free heap: %s(0.0heap)% bytes<br>
+$Hinweis: Die Daten werden immer um Mitternacht gespeichert!<br>
+$Sofort speichern dies in Console eingeben: "script >svars"<br>
+$</span></center></div>
+
+; -- END SCRIPT --
+#
