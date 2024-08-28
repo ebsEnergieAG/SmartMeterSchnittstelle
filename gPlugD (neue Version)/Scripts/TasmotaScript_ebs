@@ -53,35 +53,35 @@ spin(bL 0)
 
 1,=h<h3>Leistung</h3>
 1,=h<hr/>
-1,1-0:21.7.0(@0.001,Verbrauch L1,W,P1i,16
-1,1-0:41.7.0(@0.001,Verbrauch L2,W,P2i,16
-1,1-0:61.7.0(@0.001,Verbrauch L3,W,P3i,16
-1,1-0:1.7.0(@1,<b>Verbrauch Total</b>,kW,Pi,19
+1,1-0:21.7.0(@0.001,Verbrauch L1,W,P1i,0
+1,1-0:41.7.0(@0.001,Verbrauch L2,W,P2i,0
+1,1-0:61.7.0(@0.001,Verbrauch L3,W,P3i,0
+1,1-0:1.7.0(@1,<b>Verbrauch Total</b>,kW,Pi,2
 1,=h</br>
 1,1-0:22.7.0(@0.001,Abgabe L1,W,P1o,0
 1,1-0:42.7.0(@0.001,Abgabe L2,W,P2o,0
 1,1-0:62.7.0(@0.001,Abgabe L3,W,P3o,0
-1,1-0:2.7.0(@1,<b>Abgabe Total</b>,W,Po,19
+1,1-0:2.7.0(@1,<b>Abgabe Total</b>,W,Po,2
 1,=h<h3>Strom & Spannung</h3>
 1,=h<hr/>
-1,1-0:31.7.0(@1,Strom L1,A,I1,19
-1,1-0:32.7.0(@1,Spannung L1,V,U1,16
+1,1-0:31.7.0(@1,Strom L1,A,I1,2
+1,1-0:32.7.0(@1,Spannung L1,V,U1,0
 1,=h</br>
-1,1-0:51.7.0(@1,Strom L2,A,I2,19
-1,1-0:52.7.0(@1,Spannung L2,V,U2,16
+1,1-0:51.7.0(@1,Strom L2,A,I2,2
+1,1-0:52.7.0(@1,Spannung L2,V,U2,0
 1,=h</br>
-1,1-0:71.7.0(@1,Strom L3,A,I3,19
-1,1-0:72.7.0(@1,Spannung L3,V,U3,16
+1,1-0:71.7.0(@1,Strom L3,A,I3,2
+1,1-0:72.7.0(@1,Spannung L3,V,U3,0
 
 1,=h<h3>Energie Zähler</h3>
 1,=h<hr/>
-1,1-0:3.8.0(@1,R+ Energie,kWh,B1,19
-1,1-0:4.8.0(@1,R- Energie,kWh,B2,19
-1,1-0:1.8.0(@1,Wirk A+,kWh,E1,19
-1,1-0:2.8.0(@1,Wirk A-,kWh,E2,19
+1,1-0:3.8.0(@1,R+ Energie,kWh,B1,2
+1,1-0:4.8.0(@1,R- Energie,kWh,B2,2
+1,1-0:1.8.0(@1,Wirk A+,kWh,E1,2
+1,1-0:2.8.0(@1,Wirk A-,kWh,E2,2
 1,=h<hr/>
 1,=hZeitstempel
-1,0-0:1.0.0(@1,YYMMDDHHmmss,,TS,16
+1,0-0:1.0.0(@1,YYMMDDHHmmss,,TS,0
 #
 
 >T

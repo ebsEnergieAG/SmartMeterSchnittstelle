@@ -1,50 +1,49 @@
 >D
-;L&G 360 ebs with Google Chart Integration
+;L&G 360 ebs mit Chart Integration
 
 upH=0
 
+;Variabeln fürs Blinken
 rBlink=0
 d=750
 bu=0
 noWifi=0
-
-; define pins
+; Pins fürs Blinken
 rL=6
 gL=5
 bL=7
 butA=9
 
+
 ; -- ARRAYS --
-; 4h power chart, value every 30s
 M:s4hp1=0 480
 M:s4hp2=0 480
 M:s4hp3=0 480
-M:s4hpT=0 480
 M:p:sday=0 288
 M:p:dcon=0 31
 
 ; -- VARS --
-; energy from grid [kWh]
-EnFrGrid=0
-; actual power from grid [W]
-power=0
-; monthval and dayval
-p:mval=0
-p:dval=0
-tmp=0
-m5=0
-cstr="cnt0/12"
-cstr2="cnth0/120"
-utm="00d 00h 00m"
-avgv=0
-avgvc=0
-avgv2=0
-avgvc2=0
-hour=0
+;4h Tabelle
 avgP1=0 
 avgP2=0 
 avgP3=0 
-avgPT=0 
+avg4hCnt=0
+timeLine4h="cnth0/480"
+
+avgE=0
+avgECnt=0
+m5=0
+; energy from grid [kWh]
+EnFrGrid=0
+; Monatswert [kWh] 
+p:mval=0
+; Tageswert [kWh]
+p:dval=0
+
+tmp=0
+cstr="cnt0/12"
+utm="00d 00h 00m"
+hour=0
 da=31
 
 >B
@@ -133,35 +132,35 @@ wcs chart.draw(data,options);}google.charts.setOnLoadCallback(drawChart);</scrip
 
 1,=h<h3>Leistung</h3>
 1,=h<hr/>
-1,1-0:21.7.0(@0.001,Verbrauch L1,W,P1i,16
-1,1-0:41.7.0(@0.001,Verbrauch L2,W,P2i,16
-1,1-0:61.7.0(@0.001,Verbrauch L3,W,P3i,16
-1,1-0:1.7.0(@1,<b>Verbrauch Total</b>,kW,Pi,19
+1,1-0:21.7.0(@0.001,Verbrauch L1,W,P1i,0
+1,1-0:41.7.0(@0.001,Verbrauch L2,W,P2i,0
+1,1-0:61.7.0(@0.001,Verbrauch L3,W,P3i,0
+1,1-0:1.7.0(@1,<b>Verbrauch Total</b>,kW,Pi,2
 1,=h</br>
 1,1-0:22.7.0(@0.001,Abgabe L1,W,P1o,0
 1,1-0:42.7.0(@0.001,Abgabe L2,W,P2o,0
 1,1-0:62.7.0(@0.001,Abgabe L3,W,P3o,0
-1,1-0:2.7.0(@1,<b>Abgabe Total</b>,W,Po,19
+1,1-0:2.7.0(@1,<b>Abgabe Total</b>,W,Po,2
 1,=h<h3>Strom & Spannung</h3>
 1,=h<hr/>
-1,1-0:31.7.0(@1,Strom L1,A,I1,19
-1,1-0:32.7.0(@1,Spannung L1,V,U1,16
+1,1-0:31.7.0(@1,Strom L1,A,I1,2
+1,1-0:32.7.0(@1,Spannung L1,V,U1,0
 1,=h</br>
-1,1-0:51.7.0(@1,Strom L2,A,I2,19
-1,1-0:52.7.0(@1,Spannung L2,V,U2,16
+1,1-0:51.7.0(@1,Strom L2,A,I2,2
+1,1-0:52.7.0(@1,Spannung L2,V,U2,0
 1,=h</br>
-1,1-0:71.7.0(@1,Strom L3,A,I3,19
-1,1-0:72.7.0(@1,Spannung L3,V,U3,16
+1,1-0:71.7.0(@1,Strom L3,A,I3,2
+1,1-0:72.7.0(@1,Spannung L3,V,U3,0
 
 1,=h<h3>Energie Zähler</h3>
 1,=h<hr/>
-1,1-0:3.8.0(@1,R+ Energie,kWh,B1,19
-1,1-0:4.8.0(@1,R- Energie,kWh,B2,19
-1,1-0:1.8.0(@1,Wirk A+,kWh,E1,19
-1,1-0:2.8.0(@1,Wirk A-,kWh,E2,19
+1,1-0:3.8.0(@1,R+ Energie,kWh,B1,2
+1,1-0:4.8.0(@1,R- Energie,kWh,B2,2
+1,1-0:1.8.0(@1,Wirk A+,kWh,E1,2
+1,1-0:2.8.0(@1,Wirk A-,kWh,E2,2
 1,=h<hr/>
 1,=hZeitstempel
-1,0-0:1.0.0(@1,YYMMDDHHmmss,,TS,16
+1,0-0:1.0.0(@1,YYMMDDHHmmss,,TS,0
 #
 
 >S
@@ -187,33 +186,33 @@ if bu>2 {
 ; every 3s
 if (secs%3==0)
 {
-	print power: %power% var: %sml[1]%
 	avgP1+=sml[1]
 	avgP2+=sml[2]
 	avgP3+=sml[3]
-	avgPT+=sml[4]
-	avgvc+=1
+	avg4hCnt+=1
 
+	avgE+=sml[4]
+	avgECnt+=1
 }
 
 ; every 30s
 if (secs%30==0)
 {
 	; 4h chart. idx is set automatically
-	s4hp1=avgP1/avgvc
-	s4hp2=avgP2/avgvc
-	s4hp3=avgP3/avgvc
-	s4hpT=avgPT/avgvc
+	s4hp1=avgP1/avg4hCnt
+	s4hp2=avgP2/avg4hCnt
+	s4hp3=avgP3/avg4hCnt
+	s4hpT=avgE/avg4hCnt
 
 	avgP1=0
 	avgP2=0
 	avgP3=0
 	avgPT=0
-	avgvc=0
+	avg4hCnt=0
 
 	; Set 4h x-axis a 30s => /120 values per hour for 4h diagram. Arraysize = 480 (new function cnth)
 	; tasmota calc [hh:mm] via cnthX/Y. mm = X%Y * 60/Y. hh = X/Y
-	cstr2="cnth"+s(1.0((((hours+0)*120)+(mins*2)+(int(secs/30)))%2880+1))+"/120"
+	timeLine4h="cnth"+s(1.0((((hours+0)*120)+(mins*2)+(int(secs/30)))%2880+1))+"/480"
 }
 
 ; every 60s
@@ -225,24 +224,26 @@ if (secs%60==0)
 
 	; copy SML values
 	; energy from grid [kWh]
+	print EnFrGrid: %EnFrGrid% neu : %sml[17]%
 	EnFrGrid=sml[17]
-	
+	tmp = sdcon[day]
+	print day: %day% dcon[day]: %tmp% dval: %dval%
 	dcon[day]=EnFrGrid-dval
 	; month consumption [kWh]
+	tmp = mcon[month]
+	print month: %month% mcon[month]: %tmp% mval: %mval%
 	mcon[month]=EnFrGrid-mval
-	
-	;=>publish stat/%topic%/script/consday %2(dcon[day])%
-	;=>publish stat/%topic%/script/consmonth %2(mcon[month])%
 
 	; 24h chart. calc avg power [W] for last 5min and put into array[1-288]
 	m5=int((((hours*60)+mins)/5)+1)
 	; set idx (pointer starts from 0)
+
 	sday[0]=m5
 	if (chg[m5]>0)
 	{
-		sday[m5]=int(avgv2/avgvc2)
-		avgv2=0
-		avgvc2=0
+		sday[m5]=int(avgE/avgECnt)
+		avgE=0
+		avgECnt=0
 	}
 
 	; Set 24h x-axis a 5m => /12 values per hour for 24h diagram. Arraysize = 288 (new function cnth)
@@ -262,7 +263,7 @@ if (secs%60==0)
 			for tmp (da+1) 31 1
 				dcon[tmp]=0
 			next
-			; monthly values
+			; monthly values Set
 			mval=EnFrGrid
 		}
 		; daily values
@@ -285,7 +286,7 @@ $<div style="margin-left:-20px">
 
 ; 4h power chart - new value every 30s
 $<div id="chart1" style="text-align:center;width:400px"></div>
-$gc(lt s4hp1 s4hp2 s4hp3 "wr" "[W]" "[W]" "[W]" cstr2 "Leisung 4h [W]")
+$gc(lt s4hp1 s4hp2 s4hp3 "wr" "[W]" "[W]" "[W]" timeLine4h "Leisung 4h [W]")
 $var options = {
 $chartArea:{left:60,width:'83%%'},
 $legend:'none',

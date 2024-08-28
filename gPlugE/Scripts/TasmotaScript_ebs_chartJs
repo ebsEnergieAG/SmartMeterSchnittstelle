@@ -1,0 +1,167 @@
+>D
+;L&G 360 ebs
+
+upH=0
+
+; -- ARRAYS --
+M:s4hp1=0 480
+M:s4hp2=0 480
+M:s4hp3=0 480
+M:s4hpT= 480
+M:p:sday=0 288
+M:p:dcon=0 31
+
+; -- VARS --
+;4h Tabelle
+avgP1=0 
+avgP2=0 
+avgP3=0 
+avg4hCnt=0
+timeLine4h="cnth0/480"
+tmp=0
+
+
+>B
+->setOption55 1
+->sensor53 r
+
+for tmp 1 480 1
+	s4hpT[tmp]=0
+	s4hp1[tmp]=0
+	s4hp2[tmp]=0
+	s4hp3[tmp]=0
+next
+
+#daysub
+wcs <div><canvas id="day"></canvas></div>
+wcs <script>const cty = document.getElementById('day');
+wcs new Chart(cty, { type: 'line', data: { labels: [
+for tmp 0 479  1
+	wcs %s4hpT[tmp]%,
+next
+wcs ],datasets: [
+wcs {label: 'L1', data: [
+for tmp 0 479  1
+	wcs %tmp% ,
+next
+wcs ], borderWidth: 1 },
+wcs {label: 'L2', data: [
+for tmp 0 479  1
+	wcs %s4hp2[tmp]% ,
+next
+wcs ], borderWidth: 1 },
+wcs {label: 'L3', data: [
+for tmp 0 479  1
+	wcs %s4hp3[tmp]% ,
+next
+wcs ], borderWidth: 1 }
+wcs ]}, options: {scales: {y: {beginAtZero: true}} }});</script>
+
+; Debug the values before they are used
+wcs <div>Initial s4hp1 Values: 
+wcs %s4hp1[0]%, %s4hp1[1]%, %s4hp1[2]%, ...
+</div>
+
+wcs <div>Initial s4hp2 Values: 
+wcs %s4hp2[0]%, %s4hp2[1]%, %s4hp2[2]%, ...
+</div>
+
+wcs <div>Initial s4hp3 Values: 
+wcs %s4hp3[0]%, %s4hp3[1]%, %s4hp3[2]%, ...
+</div>
+
+>M 1
++1,4,o,0,115200
+
+1,=h<h3>Leistung</h3>
+1,=h<hr/>
+1,1-0:21.7.0(@0.001,Verbrauch L1,W,P1i,0
+1,1-0:41.7.0(@0.001,Verbrauch L2,W,P2i,0
+1,1-0:61.7.0(@0.001,Verbrauch L3,W,P3i,0
+1,1-0:1.7.0(@1,<b>Verbrauch Total</b>,kW,Pi,2
+1,=h</br>
+1,1-0:22.7.0(@0.001,Abgabe L1,W,P1o,0
+1,1-0:42.7.0(@0.001,Abgabe L2,W,P2o,0
+1,1-0:62.7.0(@0.001,Abgabe L3,W,P3o,0
+1,1-0:2.7.0(@1,<b>Abgabe Total</b>,W,Po,2
+1,=h<h3>Strom & Spannung</h3>
+1,=h<hr/>
+1,1-0:31.7.0(@1,Strom L1,A,I1,2
+1,1-0:32.7.0(@1,Spannung L1,V,U1,0
+1,=h</br>
+1,1-0:51.7.0(@1,Strom L2,A,I2,2
+1,1-0:52.7.0(@1,Spannung L2,V,U2,0
+1,=h</br>
+1,1-0:71.7.0(@1,Strom L3,A,I3,2
+1,1-0:72.7.0(@1,Spannung L3,V,U3,0
+
+1,=h<h3>Energie Zähler</h3>
+1,=h<hr/>
+1,1-0:3.8.0(@1,R+ Energie,kWh,B1,2
+1,1-0:4.8.0(@1,R- Energie,kWh,B2,2
+1,1-0:1.8.0(@1,Wirk A+,kWh,E1,2
+1,1-0:2.8.0(@1,Wirk A-,kWh,E2,2
+1,=h<hr/>
+1,=hZeitstempel
+1,0-0:1.0.0(@1,YYMMDDHHmmss,,TS,0
+#
+
+>S
+; every second
+
+; every 3s
+if (secs%3==0)
+{
+	avgP1+=sml[1] + 1
+	avgP2+=sml[2] + 2
+	avgP3+=sml[3] + 3
+	avg4hCnt+=1
+}
+
+; every 30s
+if (secs%30==0)
+{
+	; 4h chart. idx is set automatically
+	s4hp1=avgP1/avg4hCnt
+	s4hp2=avgP2/avg4hCnt
+	s4hp3=avgP3/avg4hCnt
+	s4hpT = hours mins secs
+	avgP1=0
+	avgP2=0
+	avgP3=0
+
+	avg4hCnt=0
+
+	; Set 4h x-axis a 30s => /120 values per hour for 4h diagram. Arraysize = 480 (new function cnth)
+	; tasmota calc [hh:mm] via cnthX/Y. mm = X%Y * 60/Y. hh = X/Y
+	timeLine4h="cnth"+s(1.0((((hours+0)*120)+(mins*2)+(int(secs/30)))%2880+1))+"/480"
+}
+
+
+; WEB INTERFACE
+>W
+$<div><canvas id="myChart"></canvas></div>
+$<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+$<script>const ctx = document.getElementById('myChart');
+$
+$  new Chart(ctx, {
+$    type: 'line',
+$    data: {
+$      labels: ['08:12:00', '08:12:30', '08:13:00', '08:13:00', '08:14:00', '08:14:00'],
+$      datasets: [
+$	{label: 'L1', data: [120, 154, 131, 15, 92, 83], borderWidth: 1 },
+$	{label: 'L2', data: [160, 120, 300, 50, 120, 123], borderWidth: 1 },
+$	{label: 'L3', data: [12, 190, 30, 155, 200, 523], borderWidth: 1 }
+$    ]},
+$    options: {
+$      scales: {
+$        y: {
+$          beginAtZero: true
+$        }
+$      }
+$    }
+$  });
+$</script>
+
+%=#daysub
+#
