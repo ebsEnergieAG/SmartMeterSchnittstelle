@@ -132,17 +132,6 @@ if rBlink>0 {
 
 >W
 @<style>td h3{margin-block-end: 0;color: #eaeaea}th{font-weight: normal;}tr th:first-child{text-align: left;}tr td:nth-child(2){text-align: right;color: #ffe417;font-weight:normal;}table{width:100\%;}</style>
-@<table><tbody>
-@<tr><th>Zeit</th><td>%sml[1]%</td></tr>
-@<tr><th>Zeit</th><td>%sml[2]%</td></tr>
-@<tr><th>Zeit</th><td>%sml[3]%</td></tr>
-@<tr><th>Zeit</th><td>%sml[4]%</td></tr>
-@<tr><th>Zeit</th><td>%sml[5]%</td></tr>
-@<tr><th>Zeit</th><td>%sml[6]%</td></tr>
-@<tr><th>Zeit</th><td>%sml[7]%</td></tr>
-@<tr><th>Zeit</th><td>%sml[8]%</td></tr>
-@<tr><th>Zeit</th><td>%sml[9]%</td></tr>
-@<tr><th>Zeit</th><td>%sml[10]%</td></tr>
-@</tbody></table>
+
 
 
