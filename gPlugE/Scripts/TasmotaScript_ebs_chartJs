@@ -8,8 +8,6 @@ M:s4hp1=0 480
 M:s4hp2=0 480
 M:s4hp3=0 480
 M:s4hpT=0 480
-M:p:sday=0 288
-M:p:dcon=0 31
 
 ; -- VARS --
 ;4h Tabelle
@@ -18,8 +16,6 @@ avgP2=0
 avgP3=0 
 avg4hCnt=0
 timeLine4h="cnth0/480"
-tmp=0
-tmpSt=""
 th=0
 tm=0
 ts=0
@@ -27,6 +23,8 @@ ts=0
 >B
 ->setOption55 1
 ->sensor53 r
+
+>BS
 
 #daysub
 wcs <script>const cty = document.getElementById('day');
@@ -40,7 +38,7 @@ next
 wcs ],datasets: [
 wcs {label: 'L1', data: [
 for tmp 1 s4hp1[-1] 1
-	wcs  %s4hp1[tmp]%,,
+	wcs  %s4hp1[tmp]%,
 next
 wcs ], borderWidth: 1 , pointRadius: 0},
 wcs {label: 'L2', data: [
@@ -57,7 +55,7 @@ wcs ]}, options: {spanGaps: false, scales: {y: {beginAtZero: true}} }});</script
 
 
 >M 1
-+1,4,o,0,115200
++1,5,o,0,115200
 
 1,=h<h3>Leistung</h3>
 1,=h<hr/>
@@ -93,14 +91,12 @@ wcs ]}, options: {spanGaps: false, scales: {y: {beginAtZero: true}} }});</script
 #
 
 >S
-; every second
-
 ; every 3s
 if (secs%3==0)
 {
-	avgP1+=150*(secs%6+2)
-	avgP2+=150*(secs%5+1)
-	avgP3+=150*(secs%2+3)
+	avgP1+=sml[1]
+	avgP2+=sml[2]
+	avgP3+=sml[3] 
 	avg4hCnt+=1
 }
 
@@ -112,21 +108,13 @@ if (secs%30==0)
 	s4hp2=avgP2/avg4hCnt
 	s4hp3=avgP3/avg4hCnt
 
-	; Calculate the time for the x-axis in minutes and seconds
-	;timeLine4h="cnth"+s(1.0((((hours+0)*120)+(mins*2)+(int(secs/30)))%2880+1))+"/480"
-
-	tmpSt=s(0(hours))+":"+s(0(mins))+":"+s(0(secs/30))
-	tmp=((hours*3600)+(mins*60)+secs)
-	print time %tmpSt% , %tmp%  h=%hours% m=%mins% s=%secs% t4h %timeLine4h%
-	s4hpT=tmp
+	s4hpT=((hours*3600)+(mins*60)+secs)
 
 	avgP1=0
 	avgP2=0
 	avgP3=0
-
 	avg4hCnt=0
 }
-
 
 ; WEB INTERFACE
 >W

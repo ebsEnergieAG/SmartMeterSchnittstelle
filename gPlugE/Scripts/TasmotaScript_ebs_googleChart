@@ -97,7 +97,7 @@ wcs var chart=new google.visualization.ColumnChart(document.getElementById('mont
 wcs chart.draw(data,options);}google.charts.setOnLoadCallback(drawChart);</script>
 
 >M 1
-+1,4,o,0,115200
++1,5,o,0,115200
 
 1,=h<h3>Leistung</h3>
 1,=h<hr/>
