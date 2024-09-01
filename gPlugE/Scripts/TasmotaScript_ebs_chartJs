@@ -15,10 +15,7 @@ avgP1=0
 avgP2=0 
 avgP3=0 
 avg4hCnt=0
-timeLine4h="cnth0/480"
-th=0
-tm=0
-ts=0
+tmp
 
 >B
 ->setOption55 1
@@ -30,10 +27,7 @@ ts=0
 wcs <script>const cty = document.getElementById('day');
 wcs new Chart(cty, { type: 'line', data: { labels: [
 for tmp 1 s4hpT[-1] 1   
-    th=s4hpT[tmp]/3600
-    tm=s4hpT[tmp]%3600/60
-    ts=s4hpT[tmp]%3600%60
-    wcs "%s(0(th))%:%s(0(tm))%:%s(0(ts))%",  
+	wcs "%s2hms(s4hpT[tmp])%",    
 next
 wcs ],datasets: [
 wcs {label: 'L1', data: [

@@ -132,6 +132,5 @@ if rBlink>0 {
 
 >W
 @<style>body{font-family: monospace}h4,h2{margin: 0;color: #1fa3ec}td th{font-weight: normal;}tr th:first-child{text-align: left;}tr td:nth-child(2){text-align: right;color: lime;font-weight:normal;}table{width:100\%;}</style>
-
 @<table><tbody><tr><th>Date \& Time</th><td>%tstamp%</td></tr><tr><th>Uptime</th><td> %1upH%h</td></tr></tbody></table>
 

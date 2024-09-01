@@ -1,0 +1,87 @@
+>D
+;L&G 360 ebs
+
+upH=0
+M:p:eMonth=0 31
+M:p:elaMonth=0 31
+p:zslaDay=0
+p:cDay=0
+
+ecDay=0
+sDay=1
+smlSim=3000
+tmp=0
+
+>B
+->setOption55 1
+->sensor53 r
+if(smlSim<zslaDay)
+{
+    smlSim=zslaDay
+}
+if(sDay<cDay)
+{
+    sDay=cDay
+}
+
+
+>M 1
++1,5,o,0,115200
+1,=h<h3>Energie Zähler</h3>
+1,=h<hr/>
+1,1-0:1.8.0(@1,Wirk A+,kWh,E1,2
+1,1-0:2.8.0(@1,Wirk A-,kWh,E2,2
+#
+
+>S
+; every second
+
+if(cDay!=sDay)
+{
+    print Tagesabschluss-> Tag= %cDay% ; Heute= %ecDay% ; Zählerstand Gestern=%zslaDay%
+    if(zslaDay>3000){
+        eMonth[cDay]=smlSim-zslaDay
+        if(sDay==1)
+        {
+            print Update Month Arrays
+            for tmp 1 eMonth[-1] 1
+                elaMonth[tmp]=eMonth[tmp]
+                eMonth[tmp]=0
+            next
+        }
+    }
+    zslaDay=smlSim
+    cDay=sDay
+    ecDay=0
+    print Tag initialisiert-> Tag= %cDay% ; Heute= %ecDay% ; Zählerstand Gestern=%zslaDay%
+}
+if (secs%15==0){
+    sDay+=1
+    if(sDay>31){
+        sDay=1
+    }
+    print Update Day %sDay%
+}
+
+if (secs%5==0)
+{
+    smlSim+=rnd(1000)
+    ecDay=smlSim-zslaDay
+    print Update energy %ecDay%
+}
+
+>W
+@<style>td h3{margin-block-end: 0;color: #eaeaea}th{font-weight: normal;}tr th:first-child{text-align: left;}tr td:nth-child(2){text-align: right;color: #ffe417;font-weight:normal;}table{width:100\%;}</style>
+$<div class="container">
+$   <h1>Energieverbrauch</h1>
+$   <p>Heute: %cDay% / %sDay%</p>
+$   <p>Zählerstand gestern [kWh]: %zslaDay%</p>
+$   <p>Energie Heute: %ecDay%</p>
+$   <h2>Monatswerte</h2>
+$   <table><thead>
+$            <tr><th>Tag</th><th>Aktueller Monat</th><th>Letzter Monat</th></tr>
+$    </thead><tbody>
+%for tmp 1 eMonth[-1] 1
+    $<tr><td>%tmp%</td><td>%eMonth[tmp]%</td><td>%elaMonth[tmp]%</td></tr>
+%next
+$</tbody></table></div>

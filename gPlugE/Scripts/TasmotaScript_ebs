@@ -5,48 +5,13 @@ upH=0
 sr=0
 ss=0
 
-rBlink=0
-d=750
-bu=0
-noWifi=0
-; define pins
-rL=6
-gL=5
-bL=7
-butA=9
-
-
 >B
 ->setOption55 1
 ->sensor53 r
 
-;configure GPIO
-spinm(rL O)
-spinm(gL O)
-spinm(bL O)
-spinm(butA P)
-
->BS
-; lightshow at startup
-spin(rL 1)
-delay(d)
-spin(gL 1)
-; r + g = y
-delay(d)
-spin(rL 0)
-delay(d)
-spin(gL 0)
-spin(bL 1)
-delay(d)
-spin(bL 0)
 
 >M 1
-
-+1,4,o,0,115200
-;1,=so3,512
-; substitue your 32 char HEX Key (GPK0) for "DECR-KEY" below
-; or, if data is not encrypted, use "1,=so4,"
-;1,=so4,DECR-KEY
++1,5,o,0,115200
 
 1,=h<h3>Leistung</h3>
 1,=h<hr/>
@@ -86,41 +51,6 @@ spin(bL 0)
 sr=sunrise/60
 ss=sunset/60
 upH=uptime/60
-
-; if no wifi connection after 10 sec, blink red
-if wifis==0 {
-  noWifi+=1
-}
-if noWifi>10 {
-  rBlink=3
-}
-
-if pin[butA]==0 {
-  bu+=1
-}
-if bu>2 {
-  rBlink=1
-  bu=0
-}
-
->F
-; every 100 ms
-
-; blink green on (1·7) reception
-if smlv[2]==1 {
-  spin(gL 1)
-  smlv[0]
-} else {
-  spin(gL 0)
-}
-
-if rBlink>0 {
-  spin(rL 1)
-  rBlink-=1
-  noWifi=0
-} else {
-  spin(rL 0)
-}
 
 >W
 @<style>td h3{margin-block-end: 0;color: #eaeaea}th{font-weight: normal;}tr th:first-child{text-align: left;}tr td:nth-child(2){text-align: right;color: #ffe417;font-weight:normal;}table{width:100\%;}</style>
