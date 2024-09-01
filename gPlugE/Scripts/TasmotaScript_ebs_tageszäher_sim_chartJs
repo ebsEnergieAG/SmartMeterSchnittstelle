@@ -1,7 +1,6 @@
 >D
 ;L&G 360 ebs
 
-upH=0
 M:p:eMonth=0 31
 M:p:elaMonth=0 31
 p:zslaDay=0
@@ -23,7 +22,6 @@ if(sDay<cDay)
 {
     sDay=cDay
 }
-
 
 >M 1
 +1,5,o,0,115200
@@ -55,6 +53,7 @@ if(cDay!=sDay)
     ecDay=0
     print Tag initialisiert-> Tag= %cDay% ; Heute= %ecDay% ; Zählerstand Gestern=%zslaDay%
 }
+
 if (secs%15==0){
     sDay+=1
     if(sDay>31){
@@ -78,10 +77,28 @@ $   <p>Heute: %cDay% / %sDay%</p>
 $   <p>Zählerstand gestern [kWh]: %zslaDay%</p>
 $   <p>Energie Heute: %ecDay%</p>
 $   <h2>Monatswerte</h2>
-$   <table><thead>
-$            <tr><th>Tag</th><th>Aktueller Monat</th><th>Letzter Monat</th></tr>
-$    </thead><tbody>
+
+$<div><canvas id="day" style="width:vw; height:400px;"></canvas></div>
+$<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+$ <script>const cty = document.getElementById('day');
+$ new Chart(cty, { type: 'bar', data: { labels: [
 %for tmp 1 eMonth[-1] 1
-    $<tr><td>%tmp%</td><td>%eMonth[tmp]%</td><td>%elaMonth[tmp]%</td></tr>
+    $%tmp%,
 %next
-$</tbody></table></div>
+$ ],datasets: [
+$ {label: 'Aktuell', data: [
+%for tmp 1 eMonth[-1] 1
+    $%eMonth[tmp]%,
+%next
+$ ], backgroundColor:"#1fa3ec", borderColor: "#e342d0"},
+$ {label: 'Letzter', data: [
+%for tmp 1 elaMonth[-1] 1
+    $%elaMonth[tmp]%,
+%next
+$ ], backgroundColor:"#d43535", borderColor: "#424de3"},
+$ ]}, options: {spanGaps: false, scales: {y: {beginAtZero: true}} }});</script>
+
+$</div>
+
+

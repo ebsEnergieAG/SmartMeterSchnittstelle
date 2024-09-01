@@ -1,0 +1,177 @@
+>D
+;L&G 360 ebs
+rBlink=0
+d=750
+bu=0
+noWifi=0
+; define pins
+rL=6
+gL=5
+bL=7
+butA=9
+
+;Arrays für aktuellen und vergangenen Monat
+M:p:eMonth=0 31
+M:p:elaMonth=0 31
+;Zählerstand gestern 
+p:zslaDay=0
+;Aktueller Tag 
+p:cDay=0
+;energie verbaruch heute nur als Anzeige
+ecDay=0
+
+tmp=0
+
+>B
+->setOption55 1
+->sensor53 r
+
+;configure GPIO
+spinm(rL O)
+spinm(gL O)
+spinm(bL O)
+spinm(butA P)
+
+>BS
+; lightshow at startup
+spin(rL 1)
+delay(d)
+spin(gL 1)
+; r + g = y
+delay(d)
+spin(rL 0)
+delay(d)
+spin(gL 0)
+spin(bL 1)
+delay(d)
+spin(bL 0)
+
+>M 1
++1,4,o,0,115200
+1,=h<h3>Leistung</h3>
+1,=h<hr/>
+1,1-0:21.7.0(@0.001,Verbrauch L1,W,P1i,0
+1,1-0:41.7.0(@0.001,Verbrauch L2,W,P2i,0
+1,1-0:61.7.0(@0.001,Verbrauch L3,W,P3i,0
+1,1-0:1.7.0(@1,<b>Verbrauch Total</b>,kW,Pi,2
+1,=h</br>
+1,1-0:22.7.0(@0.001,Abgabe L1,W,P1o,0
+1,1-0:42.7.0(@0.001,Abgabe L2,W,P2o,0
+1,1-0:62.7.0(@0.001,Abgabe L3,W,P3o,0
+1,1-0:2.7.0(@1,<b>Abgabe Total</b>,W,Po,2
+1,=h<h3>Strom & Spannung</h3>
+1,=h<hr/>
+1,1-0:31.7.0(@1,Strom L1,A,I1,2
+1,1-0:32.7.0(@1,Spannung L1,V,U1,0
+1,=h</br>
+1,1-0:51.7.0(@1,Strom L2,A,I2,2
+1,1-0:52.7.0(@1,Spannung L2,V,U2,0
+1,=h</br>
+1,1-0:71.7.0(@1,Strom L3,A,I3,2
+1,1-0:72.7.0(@1,Spannung L3,V,U3,0
+
+1,=h<h3>Energie Zähler</h3>
+1,=h<hr/>
+1,1-0:3.8.0(@1,R+ Energie,kWh,B1,2
+1,1-0:4.8.0(@1,R- Energie,kWh,B2,2
+1,1-0:1.8.0(@1,Wirk A+,kWh,E1,2
+1,1-0:2.8.0(@1,Wirk A-,kWh,E2,2
+1,=h<hr/>
+1,=hZeitstempel
+1,0-0:1.0.0(@1,YYMMDDHHmmss,,TS,0
+#
+
+>S
+;>S wird jede sekunge ausgeführt 
+
+if(cDay!=day)
+{
+    print Tagesabschluss-> Tag= %cDay% ; Heute= %ecDay% ; Zählerstand Gestern=%zslaDay%
+    if(zslaDay>3000){
+        eMonth[cDay]=sml[17]-zslaDay
+        if(sDay==1)
+        {
+            print Update Month Arrays
+            for tmp 1 eMonth[-1] 1
+                elaMonth[tmp]=eMonth[tmp]
+                eMonth[tmp]=0
+            next
+        }
+    }
+    zslaDay=sml[17]
+    cDay=sDay
+    ecDay=0
+    print Tag initialisiert-> Tag= %cDay% ; Heute= %ecDay% ; Zählerstand Gestern=%zslaDay%
+}
+
+if (secs%5==0)
+{
+    ecDay=sml[17]-zslaDay
+    print Update energy %ecDay%
+}
+
+; if no wifi connection after 10 sec, blink red
+if wifis==0 {
+  noWifi+=1
+}
+if noWifi>10 {
+  rBlink=3
+}
+
+if pin[butA]==0 {
+  bu+=1
+}
+if bu>2 {
+  rBlink=1
+  bu=0
+}
+
+>F
+; every 100 ms
+
+; blink green on (1·7) reception
+if smlv[2]==1 {
+  spin(gL 1)
+  smlv[0]
+} else {
+  spin(gL 0)
+}
+
+if rBlink>0 {
+  spin(rL 1)
+  rBlink-=1
+  noWifi=0
+} else {
+  spin(rL 0)
+}
+
+>W
+@<style>td h3{margin-block-end: 0;color: #eaeaea}th{font-weight: normal;}tr th:first-child{text-align: left;}tr td:nth-child(2){text-align: right;color: #ffe417;font-weight:normal;}table{width:100\%;}</style>
+$<div class="container">
+$   <h1>Energieverbrauch</h1>
+$   <p>Heute: %cDay% / %sDay%</p>
+$   <p>Zählerstand gestern [kWh]: %zslaDay%</p>
+$   <p>Energie Heute: %ecDay%</p>
+$   <h2>Monatswerte</h2>
+
+$<div id="chart1" style="text-align:center;width:600px"></div>
+$gc(ct eMonth elaMonth "wr" "Aktuell" "Letzter" "cnt0" "Tagesverbrauch")
+$var options = {
+$legend:'top',
+$vAxis:{format:'# kWH'},
+$backgroundColor: '#daeded',
+$explorer:{actions:['dragToZoom', 'rightClickToReset']},
+$hAxis:{title:'Tag',ticks:[1,5,10,15,20,25,30]} ,         
+$title:'Tagesverbräuche Monatsansicht'
+$};
+$gc(e)
+
+$<table><thead>
+$<tr><th>Tag</th><th>Aktueller Monat</th><th>Letzter Monat</th></tr>
+$</thead><tbody>
+%for tmp 1 eMonth[-1] 1
+    $<tr><td>%tmp%</td><td>%eMonth[tmp]%</td><td>%elaMonth[tmp]%</td></tr>
+%next
+$</tbody></table></div>
+
+
